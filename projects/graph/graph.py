@@ -49,7 +49,7 @@ class Graph:
             v = q.dequeue()
         ## if we haven't visited this node yet,
             if v not in visited:
-                # print(v)
+                print(v)
         ### mark as visited
                 visited.add(v)
         ### get its neighbors
@@ -72,21 +72,20 @@ class Graph:
         visited = set()
 
         # while our stack isn't empty
-        while s.size() > 0:
+        while s.size() > 0: # base case in recursive function? (maybe)
         ## dequeue whatever's at the front of our line, this is our current_node
             v = s.pop()
             
         ## if we haven't visited this node yet,
             if v not in visited:
-
-                # print(v)
+                print(v)
         ### mark as visited
                 visited.add(v)
         ### get its neighbors
         ### for each of the neighbors,
                 for neighbor in self.get_neighbors(v):
         #### add to queue
-                    s.push(neighbor)
+                    s.push(neighbor) # recursive call here. # must keep track of cache
         
     def dft_recursive(self, starting_vertex):
         """
@@ -96,11 +95,9 @@ class Graph:
         This should be done using recursion.
         """
         pass  
-
-        explore(graph) {
-        visit(this_vert);
-        explore(remaining_graph);
-        }
+        # instantiate cache, use it if there, else create
+        # 
+        
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -109,6 +106,10 @@ class Graph:
         breath-first order.
         """
         pass  # TODO
+        # difference in what you store in Q / S
+        # store the entire path instead of current node
+        # when we deque the current node is "path at -1" # last index inside the path
+        # once we find vertex, return the path
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -127,6 +128,7 @@ class Graph:
         This should be done using recursion.
         """
         pass  # TODO
+        # same differences
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
