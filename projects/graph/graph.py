@@ -13,34 +13,81 @@ class Graph:
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        self.vertices[vertex_id] = set() # set of edges
 
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        if v1 in self.vertices and v2 in self.vertices:
+            self.vertices[v1].add(v2)
+        else:
+            raise IndexError("Vertex does not exist in graph")
 
     def get_neighbors(self, vertex_id):
         """
         Get all neighbors (edges) of a vertex.
         """
-        pass  # TODO
+        return self.vertices[vertex_id]
 
-    def bft(self, starting_vertex):
+    def bft(self, starting_vertex_id):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # make a queue
+        q = Queue()
+        # enqueue our starting node
+        q.enqueue(starting_vertex_id)
 
-    def dft(self, starting_vertex):
+        # make a set to track if we've been here before
+        visited = set()
+
+        # while our queue isn't empty
+        while q.size() > 0:
+        ## dequeue whatever's at the front of our line, this is our current_node
+            v = q.dequeue()
+        ## if we haven't visited this node yet,
+            if v not in visited:
+                # print(v)
+        ### mark as visited
+                visited.add(v)
+        ### get its neighbors
+        ### for each of the neighbors,
+                for neighbor in self.get_neighbors(v):
+        #### add to queue
+                    q.enqueue(neighbor)
+
+
+    def dft(self, starting_vertex_id):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        s = Stack()
+        # add our starting node to stack
+        s.push(starting_vertex_id)
 
+        # make a set to track if we've been here before
+        visited = set()
+
+        # while our stack isn't empty
+        while s.size() > 0:
+        ## dequeue whatever's at the front of our line, this is our current_node
+            v = s.pop()
+            
+        ## if we haven't visited this node yet,
+            if v not in visited:
+
+                # print(v)
+        ### mark as visited
+                visited.add(v)
+        ### get its neighbors
+        ### for each of the neighbors,
+                for neighbor in self.get_neighbors(v):
+        #### add to queue
+                    s.push(neighbor)
+        
     def dft_recursive(self, starting_vertex):
         """
         Print each vertex in depth-first order
@@ -48,7 +95,12 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+        pass  
+
+        explore(graph) {
+        visit(this_vert);
+        explore(remaining_graph);
+        }
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -128,18 +180,18 @@ if __name__ == '__main__':
         1, 2, 4, 6, 3, 5, 7
     '''
     graph.dft(1)
-    graph.dft_recursive(1)
+    # graph.dft_recursive(1)
 
     '''
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    print(graph.bfs(1, 6))
+    # print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    print(graph.dfs(1, 6))
-    print(graph.dfs_recursive(1, 6))
+    # print(graph.dfs(1, 6))
+    # print(graph.dfs_recursive(1, 6))
