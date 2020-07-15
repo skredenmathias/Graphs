@@ -94,9 +94,7 @@ class Graph:
 
         This should be done using recursion.
         """
-        if visited:
-            visited(starting_vertex)
-        else:
+        if visited is None:
             visited = set()
 
         v = starting_vertex
@@ -133,7 +131,7 @@ class Graph:
         # While the queue is not empty...
         while q.size() > 0:
             # Dequeue the first PATH
-            print(q.queue)
+            # print(q.queue)
             path = q.dequeue()
             # Grab the last vertex from the PATH
             last_vertex = path[-1]
@@ -166,6 +164,7 @@ class Graph:
         visited = set()
         # While the stack is not empty...
         while s.size() > 0:
+            print(s.stack)
             # Dequeue the first PATH
             path = s.pop()
             # Grab the last vertex from the PATH
@@ -195,53 +194,22 @@ class Graph:
 
         This should be done using recursion.
         """
-        if visited:
-            visited.add(starting_vertex)
-        else:
+        if visited is None:
             visited = set()
             path = []
-        path.append(starting_vertex)
-        last_vertex = path[-1]
 
-        if starting_vertex in visited:
-            return
-        
-        
-        # visited.add(starting_vertex)
-        path.append(starting_vertex)
+        if starting_vertex not in visited:
+            path.append(starting_vertex)
 
-        if last_vertex not in visited:
-            if last_vertex == destination_vertex:
+            if starting_vertex == destination_vertex:
                 return path
             else:
-                visited.add(last_vertex)
+                visited.add(starting_vertex)
 
-        for neighbor in self.get_neighbors(last_vertex):
-            # if neighbor in neighbors
-            result = self.dft_recursive(neighbor, destination_vertex, visited, path)
-            if result is not None:
-                return result
-
-
-
-
-
-        if visited:
-            visited(starting_vertex)
-        else:
-            visited = set()
-
-        v = starting_vertex
-
-        if v in visited:
-            return
-        
-        print(v)
-        visited.add(v)
-
-        for neighbor in self.get_neighbors(v):
-            self.dft_recursive(neighbor, visited)
-
+            for neighbor in self.get_neighbors(starting_vertex):
+                result = self.dfs_recursive(neighbor, destination_vertex, visited, path.copy())
+                if result is not None:
+                    return result
 
 
 if __name__ == '__main__':
@@ -309,5 +277,5 @@ if __name__ == '__main__':
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    # print(graph.dfs(1, 6))
+    print(graph.dfs(1, 6))
     print(graph.dfs_recursive(1, 6))
