@@ -1,4 +1,16 @@
 import random
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 class User:
     def __init__(self, name):
@@ -59,9 +71,9 @@ class SocialGraph:
 
         # Shuffle them
         random.shuffle(possible_friendships)
-
+        
         # Choose the first X out of the list. X = (num_users * avg_friendships) // 2
-        if i in range(num_users * avg_friendships // 2):
+        for i in range(num_users * avg_friendships // 2):
             # Set up those friendships
             friendship = possible_friendships[i]
             self.add_friendship(friendship[0], friendship[1])
@@ -76,82 +88,27 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        visited = {}  # Note that this is a dictionary, not a set
-        # Do BFT
+        visited = {}
             # return {friend_id: [path]} for each friend
-        for key, value in sg.friendships.items():
-            if value is not set():
-                print(value)
-                if key == value:
-                    visited[key] = "path"
-                if value == key:
-                    visited[value] = "path"
-            # Notes:
-            # path is the shortest path
-            # to get path, we might have to consider the island traversal.
+        q = Queue()
+        q.enqueue([user_id])
+        while q.size() > 0:
+            print(q.queue)
+            path = q.dequeue()
+            last_friend_id = path[-1]
+            if last_friend_id not in visited:
+                visited[last_friend_id] = path
+            
+                for friend in self.friendships[last_friend_id]:
+                    path_copy = path.copy()
+                    path_copy.append(friend)                        
+                    q.enqueue(path_copy)
+
         return visited
 
-    def bft(self, starting_vertex):
-        q = Queue()
-        q.enqueue(starting_vertex)
-
-        # visited = set() # change
-
-        while q.size() > 0:
-            v = q.dequeue()
-            if v not in visited: # change?
-                print(v)
-                visited.add(v) # change # visited[]
-
-                for neighbor in self.get_neighbors(v): # add get_neighbors / create it
-                    q.enqueue(neighbor)
-
-
-
-    def bfs(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing the shortest path from
-        starting_vertex to destination_vertex in
-        breath-first order.
-        """
-        pass  # TODO
-        # difference in what you store in Q / S
-
-        # store the entire path instead of current node
-            # path = [nodes]
-        # when we deque the current node is "path at -1" # last index inside the path
-        # once we find vertex, return the path
-
-        # Create an empty queue and enqueue A PATH TO the starting vertex ID
-        q = Queue()
-        q.enqueue([starting_vertex])
-        # Create a Set to store visited vertices
-        visited = set()
-        # While the queue is not empty...
-        while q.size() > 0:
-            # Dequeue the first PATH
-            # print(q.queue)
-            path = q.dequeue()
-            # Grab the last vertex from the PATH
-            last_vertex = path[-1]
-            # If that vertex has not been visited...
-            if last_vertex not in visited:
-                # CHECK IF IT'S THE TARGET
-                if last_vertex == destination_vertex:
-                # IF SO, RETURN PATH
-                    return path
-                # Mark it as visited...
-                else:
-                    visited.add(last_vertex)
-                # Then add A PATH TO its neighbors to the back of the queue
-                for neighbor in self.get_neighbors(last_vertex):
-                    # _COPY_ THE PATH
-                    path_copy = path.copy()
-                    path_copy.append(neighbor)
-                    q.enqueue(path_copy)
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 5)
+    sg.populate_graph(10, 3)
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     print(connections)
