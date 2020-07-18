@@ -93,7 +93,6 @@ class SocialGraph:
         q = Queue()
         q.enqueue([user_id])
         while q.size() > 0:
-            print(q.queue)
             path = q.dequeue()
             last_friend_id = path[-1]
             if last_friend_id not in visited:
